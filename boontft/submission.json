@@ -1,0 +1,25 @@
+{
+  "team": "boontft",
+  "val_bpb": null,
+  "num_seeds": 3,
+  "artifact_bytes": null,
+  "training_time_seconds": null,
+  "gpu_config": "8xH100 SXM",
+  "techniques": [
+    "11L 512d 8H/4KV GQA",
+    "3x MLP relu-squared",
+    "XSA last 4 layers",
+    "EMA (decay=0.997)",
+    "TTT (3 epochs SGD, freeze first 2 blocks)",
+    "Partial RoPE (16/64 dims)",
+    "LN Scale (1/sqrt(layer+1))",
+    "Shared Value Embeddings (dim=128, layers 9-10)",
+    "SmearGate + BigramHash(2048)",
+    "OrthoInit + muP scaling",
+    "Muon + AdamW (WD=0.04)",
+    "Late QAT (int6 STE)",
+    "Int6 mixed quant + zstd-22",
+    "Sliding window eval (stride=64)",
+    "U-Net skip connections"
+  ]
+}
