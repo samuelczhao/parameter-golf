@@ -113,16 +113,17 @@ class Hyperparameters:
     ema_enabled = bool(int(os.environ.get("EMA_ENABLED", "1")))
     ema_decay = float(os.environ.get("EMA_DECAY", 0.997))
 
-    # TTT (test-time training during eval)
+    # TTT — aggressive config per PR #398 (20 epochs, all blocks, lr=0.008 = ~0.01 bpb)
     ttt_enabled = bool(int(os.environ.get("TTT_ENABLED", "1")))
-    ttt_lr = float(os.environ.get("TTT_LR", 0.002))
-    ttt_epochs = int(os.environ.get("TTT_EPOCHS", 3))
+    ttt_lr = float(os.environ.get("TTT_LR", 0.008))
+    ttt_epochs = int(os.environ.get("TTT_EPOCHS", 20))
     ttt_momentum = float(os.environ.get("TTT_MOMENTUM", 0.9))
     ttt_batch_seqs = int(os.environ.get("TTT_BATCH_SEQS", 32))
-    ttt_freeze_blocks = int(os.environ.get("TTT_FREEZE_BLOCKS", 2))
+    ttt_freeze_blocks = int(os.environ.get("TTT_FREEZE_BLOCKS", 0))
 
-    # Efficient partial XSA: apply to last N layers only (deep layers have highest self-attention bias)
-    xsa_last_n = int(os.environ.get("XSA_LAST_N", 4))  # XSA on last 4 layers (0 = disabled)
+    # XSA: PR #398 showed removing XSA saves ~1.4ms/step = ~130 more training steps
+    # Default off for throughput; ablate with XSA_LAST_N=4 to compare
+    xsa_last_n = int(os.environ.get("XSA_LAST_N", 0))
     rope_dims = int(os.environ.get("ROPE_DIMS", 16))
     ln_scale = bool(int(os.environ.get("LN_SCALE", "1")))
     dtg_enabled = bool(int(os.environ.get("DTG_ENABLED", "0")))
